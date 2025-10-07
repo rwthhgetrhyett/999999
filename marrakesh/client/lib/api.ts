@@ -100,9 +100,9 @@ function ensureGameState(session: Session): GameState {
 }
 
 function defaultCoinsForCount(count: number) {
-  if (count === 2) return 60;
-  if (count === 3) return 40;
-  return 30;
+  if (count === 2) return 24;
+  if (count === 3) return 15;
+  return 12;
 }
 
 function defaultRugsForCount(count: number) {
