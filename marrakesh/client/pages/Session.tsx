@@ -8,6 +8,7 @@ import { GameState, Session } from "@shared/api";
 import { toast } from "sonner";
 
 const RUG_TEXTURE_URL = "https://cdn.builder.io/api/v1/image/assets%2F9c98f74ce2d9433495c720297d8c0a5c%2F22506cd4c0d54c62a09870a1145f0ae3?format=webp&width=800";
+const SECOND_PLAYER_RUG_TEXTURE_URL = "https://cdn.builder.io/api/v1/image/assets%2Ff96640d3454f4d9d93d1f5860e5ddd77%2Fb6d287fdf27f4c729d8d718de7640156?format=webp&width=800";
 const SECOND_PLAYER_RUG_COLOR = "#dc2626";
 const STARTING_COINS = 30;
 const STARTING_RUGS = 24;
@@ -149,10 +150,12 @@ export default function SessionPage() {
             : colorFor(ownerId)
           : undefined;
 
+        const textureUrl = ownerId === secondPlayerId ? SECOND_PLAYER_RUG_TEXTURE_URL : RUG_TEXTURE_URL;
+
         return {
           ownerId,
           color,
-          textureUrl: RUG_TEXTURE_URL,
+          textureUrl,
           orientation,
           segment,
         };
