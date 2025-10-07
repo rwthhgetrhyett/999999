@@ -99,16 +99,12 @@ function ensureGameState(session: Session): GameState {
   all[session.id] = initial; setStates(all); return initial;
 }
 
-function defaultCoinsForCount(count: number) {
-  if (count === 2) return 60;
-  if (count === 3) return 40;
+function defaultCoinsForCount(_count: number) {
   return 30;
 }
 
-function defaultRugsForCount(count: number) {
-  if (count === 2) return 24;
-  if (count === 3) return 15;
-  return 12;
+function defaultRugsForCount(_count: number) {
+  return 24;
 }
 
 function nextPlayerId(session: Session, currentId?: string) { const order = session.turnOrder || []; if (order.length === 0) return undefined; const idx = currentId ? order.indexOf(currentId) : -1; const next = order[(idx + 1) % order.length]; return next; }
