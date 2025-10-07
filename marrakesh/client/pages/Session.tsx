@@ -10,6 +10,12 @@ import { toast } from "sonner";
 const RUG_TEXTURE_URL = "https://cdn.builder.io/api/v1/image/assets%2F9c98f74ce2d9433495c720297d8c0a5c%2F22506cd4c0d54c62a09870a1145f0ae3?format=webp&width=800";
 const SECOND_PLAYER_RUG_COLOR = "#dc2626";
 
+function startingPoolForPlayerCount(count: number) {
+  if (count === 2) return 24;
+  if (count === 3) return 15;
+  return 12;
+}
+
 export default function SessionPage() {
   const { id = "" } = useParams();
   const { token, user } = useAuth();
@@ -49,6 +55,7 @@ export default function SessionPage() {
   }, [id, token]);
 
   const players = session?.players ?? [];
+  const startingPool = startingPoolForPlayerCount(players.length);
   const secondPlayerId = players[1]?.id ?? null;
   const activePlayerId = state?.activePlayerId;
   const isMyTurn = Boolean(user && activePlayerId === user.id);
@@ -268,8 +275,8 @@ export default function SessionPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-3 text-muted-foreground">
-                  <span title="Монеты" className="min-w-10 text-right">💰 {state?.balances?.[p.id] ?? 30}</span>
-                  <span title="Ковры" className="min-w-8 text-right">🧶 {state?.rugsLeft?.[p.id] ?? 12}</span>
+                  <span title="Монеты" className="min-w-10 text-right">💰 {state?.balances?.[p.id] ?? startingPool}</span>
+                  <span title="Ковры" className="min-w-8 text-right">🧶 {state?.rugsLeft?.[p.id] ?? startingPool}</span>
                 </div>
               </li>
             ))}
