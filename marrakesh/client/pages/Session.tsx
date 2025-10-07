@@ -8,6 +8,7 @@ import { GameState, Session } from "@shared/api";
 import { toast } from "sonner";
 
 const RUG_TEXTURE_URL = "https://cdn.builder.io/api/v1/image/assets%2F9c98f74ce2d9433495c720297d8c0a5c%2F22506cd4c0d54c62a09870a1145f0ae3?format=webp&width=800";
+const SECOND_PLAYER_RUG_COLOR = "#dc2626";
 
 export default function SessionPage() {
   const { id = "" } = useParams();
@@ -48,6 +49,7 @@ export default function SessionPage() {
   }, [id, token]);
 
   const players = session?.players ?? [];
+  const secondPlayerId = players[1]?.id ?? null;
   const activePlayerId = state?.activePlayerId;
   const isMyTurn = Boolean(user && activePlayerId === user.id);
   const gameFinished = state?.status === "finished";
@@ -97,7 +99,7 @@ export default function SessionPage() {
   const playerColors = useMemo(() => {
     const colorMap: Record<string, string> = {};
     players.forEach((player, index) => {
-      colorMap[player.id] = index === 1 ? "#dc2626" : baseColorFor(player.id);
+      colorMap[player.id] = index === 1 ? SECOND_PLAYER_RUG_COLOR : baseColorFor(player.id);
     });
     return colorMap;
   }, [players]);
@@ -139,16 +141,22 @@ export default function SessionPage() {
           segment = "end";
         }
 
+        const color = ownerId
+          ? ownerId === secondPlayerId
+            ? SECOND_PLAYER_RUG_COLOR
+            : colorFor(ownerId)
+          : undefined;
+
         return {
           ownerId,
-          color: ownerId ? colorFor(ownerId) : undefined,
+          color,
           textureUrl: RUG_TEXTURE_URL,
           orientation,
           segment,
         };
       }),
     );
-  }, [playerColors, state, size]);
+  }, [playerColors, secondPlayerId, state, size]);
 
   async function onRotate(turn: "left" | "right") {
     if (gameFinished) return;
